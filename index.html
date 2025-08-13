@@ -9,9 +9,11 @@
   <meta property="og:description" content="Équipes, calendrier, résultats, actus et sponsoring." />
   <meta property="og:type" content="website" />
   <meta name="theme-color" content="#111111" />
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+
   <style>
     :root{
       --black:#0b0b0b; --yellow:#ffd000; --red:#e11d2f; --white:#ffffff; --muted:#f4f4f5;
@@ -22,6 +24,8 @@
     a{color:inherit;text-decoration:none}
     img{max-width:100%;display:block}
     .container{max-width:1100px;margin:0 auto;padding:0 20px}
+
+    /* Header / Nav */
     header{position:sticky;top:0;z-index:50;background:rgba(10,10,10,.8);backdrop-filter:saturate(1.2) blur(8px);border-bottom:1px solid #222}
     .nav{display:flex;align-items:center;justify-content:space-between;padding:12px 0}
     .brand{display:flex;gap:12px;align-items:center}
@@ -32,12 +36,22 @@
     .menu a:hover{background:#1f1f1f;opacity:1}
     .cta{background:var(--yellow);color:#111;padding:10px 14px;border-radius:14px;font-weight:700}
     .hamburger{display:none;cursor:pointer;border:1px solid #333;border-radius:12px;padding:8px}
+
+    /* ✅ Correctif doublon: cacher la nav mobile par défaut (desktop) */
+    .mobile{display:none !important}
+
     @media (max-width:850px){
       .menu{display:none}
       .hamburger{display:block}
-      .mobile{display:none;position:absolute;left:0;right:0;top:64px;background:#0f0f10;border-bottom:1px solid #222}
+      /* ✅ Afficher la nav mobile uniquement en petit écran */
+      .mobile{
+        display:none; /* toggled via JS */
+        position:absolute;left:0;right:0;top:64px;
+        background:#0f0f10;border-bottom:1px solid #222
+      }
       .mobile a{display:block;padding:14px 20px;border-top:1px solid #1f1f1f}
     }
+
     /* Hero */
     .hero{position:relative;isolation:isolate}
     .hero .bg{position:absolute;inset:0;background:
@@ -57,10 +71,12 @@
     @media (max-width:900px){.cards{grid-template-columns:1fr}}
     .card{background:var(--card);border:1px solid #222;border-radius:var(--radius);padding:18px}
     .card h3{margin:0 0 8px}
+
     /* Sections */
     section{padding:40px 0;border-top:1px solid #161616}
     h2.section-title{font-size:28px;margin:0 0 18px}
     .pill{display:inline-block;padding:6px 10px;border:1px solid #2a2a2a;border-radius:999px;background:#141414;color:#e5e7eb;font-size:13px}
+
     /* Calendrier */
     .grid{display:grid;gap:16px}
     .grid.cols-3{grid-template-columns:repeat(3,1fr)}
@@ -69,16 +85,19 @@
     .match{background:var(--card-2);border:1px solid #262626;border-radius:16px;padding:14px;display:flex;justify-content:space-between;gap:10px;align-items:center}
     .match .teams{display:flex;flex-direction:column;gap:4px}
     .match .meta{font-size:13px;color:#cbd5e1}
+
     /* Actus */
     .news{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
     @media (max-width:900px){.news{grid-template-columns:1fr}}
     .news .item{background:var(--card);border:1px solid #222;border-radius:16px;overflow:hidden}
     .news .item img{height:160px;width:100%;object-fit:cover}
     .news .item .body{padding:14px}
+
     /* Sponsors */
     .sponsors{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
     @media (max-width:900px){.sponsors{grid-template-columns:repeat(2,1fr)}}
     .sponsor{background:#121212;border:1px dashed #2a2a2a;border-radius:16px;padding:18px;display:flex;align-items:center;justify-content:center;min-height:90px;color:#9ca3af}
+
     /* Footer */
     footer{padding:28px 0;color:#9ca3af}
     .socials{display:flex;gap:10px}
@@ -91,6 +110,8 @@
         <img src="assets/logo.png" alt="Logo SHC Montagny Hurricanes" />
         <h1>SHC Montagny Hurricanes</h1>
       </div>
+
+      <!-- Nav desktop -->
       <nav class="menu" aria-label="Navigation principale">
         <a href="#accueil">Accueil</a>
         <a href="#equipes">Équipes</a>
@@ -99,8 +120,12 @@
         <a href="#sponsors">Sponsors</a>
         <a class="cta" href="#contact">Nous rejoindre</a>
       </nav>
-      <button class="hamburger" id="hamburger" aria-label="Ouvrir le menu">☰</button>
+
+      <!-- Bouton burger (visible seulement <850px) -->
+      <button class="hamburger" id="hamburger" aria-label="Ouvrir le menu" aria-expanded="false">☰</button>
     </div>
+
+    <!-- Nav mobile (affichée seulement <850px via CSS + JS) -->
     <nav class="mobile" id="mobileMenu" aria-label="Navigation mobile">
       <a href="#accueil">Accueil</a>
       <a href="#equipes">Équipes</a>
@@ -232,28 +257,30 @@
   </footer>
 
   <script>
+    /* Matches & News demo data */
     const matches = [
       { date: '2025-09-07', time: '15:00', home: 'SHC Montagny', away: 'Rivaux HC', place: 'Cousset', score: null },
       { date: '2025-09-21', time: '18:30', home: 'Tigers HC', away: 'SHC Montagny', place: 'Extérieur', score: null },
       { date: '2025-10-05', time: '14:00', home: 'SHC Montagny', away: 'Léman Blades', place: 'Cousset', score: '4–3' }
     ];
-
     const news = [
       { title: 'Lancement du mouvement junior', img: 'assets/juniors.jpg', text: 'Inscriptions ouvertes pour les 6–16 ans. Matériel de prêt disponible.', date: '2025-08-01' },
       { title: 'Nouvelle saison — préparez-vous !', img: 'assets/team.jpg', text: 'Calendrier provisoire en ligne, premiers entraînements dès août.', date: '2025-07-25' },
       { title: 'Soirée fondue après-match', img: 'assets/fondue.jpg', text: 'Rejoignez-nous pour un moment convivial après le match à domicile.', date: '2025-10-05' }
     ];
 
+    /* Helpers */
     const $ = sel => document.querySelector(sel);
     function formatDate(iso){
       const d = new Date(iso + 'T00:00:00');
       return d.toLocaleDateString('fr-CH', { weekday:'short', day:'2-digit', month:'2-digit' });
     }
-    function upcomingOnly(list){
-      return list.slice().sort((a,b)=>a.date.localeCompare(b.date));
-    }
+    function upcomingOnly(list){ return list.slice().sort((a,b)=>a.date.localeCompare(b.date)); }
+
+    /* Render matches & news */
     function renderMatches(){
       const root = document.getElementById('matches');
+      if(!root) return;
       root.innerHTML = '';
       upcomingOnly(matches).forEach(m => {
         const el = document.createElement('div');
@@ -266,14 +293,14 @@
           </div>
           <div style="text-align:right">
             <div><strong>${formatDate(m.date)}</strong> · ${m.time}</div>
-            <div class="meta">${m.score ? `Score : ${m.score}` : 'À venir'}</div>
-          </div>
-        `;
+            <div class="meta">${m.score ? `Score : ${m.score}` : 'À venir'}</div>
+          </div>`;
         root.appendChild(el);
       });
     }
     function renderNews(){
       const root = document.getElementById('news');
+      if(!root) return;
       root.innerHTML = '';
       news.sort((a,b)=>b.date.localeCompare(a.date)).forEach(n => {
         const el = document.createElement('article');
@@ -285,11 +312,12 @@
             <p class="meta" style="margin:0 0 8px">${new Date(n.date).toLocaleDateString('fr-CH')}</p>
             <p style="margin:0 0 8px">${n.text}</p>
             <a class="btn" href="#">Lire</a>
-          </div>
-        `;
+          </div>`;
         root.appendChild(el);
       });
     }
+
+    /* Contact */
     function handleContact(e){
       e.preventDefault();
       const data = Object.fromEntries(new FormData(e.target));
@@ -298,13 +326,16 @@
       document.getElementById('contactStatus').textContent = 'Ouverture de votre client mail…';
       e.target.reset();
     }
+
+    /* Burger toggle (mobile) */
     const burger = document.getElementById('hamburger');
     const mobile = document.getElementById('mobileMenu');
-    burger?.addEventListener('click',()=>{
+    burger?.addEventListener('click', ()=>{
       const isOpen = mobile.style.display === 'block';
       mobile.style.display = isOpen ? 'none' : 'block';
       burger.setAttribute('aria-expanded', String(!isOpen));
     });
+
     document.getElementById('year').textContent = new Date().getFullYear();
     renderMatches();
     renderNews();

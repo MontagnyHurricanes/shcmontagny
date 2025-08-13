@@ -20,11 +20,22 @@
 <body>
   <header>
    <div class="container nav">
-    <div class="brand">
-      <img src="assets/logo.png" alt="Logo SHC Montagny Hurricanes" />
-      <h1>SHC Montagny Hurricanes</h1>
+      <div class="brand">
+        <!-- Remplacez src par votre vrai logo: assets/logo.png -->
+        <img src="assets/logo.png" alt="Logo SHC Montagny Hurricanes" />
+        <h1>SHC Montagny Hurricanes</h1>
+      </div>
+      <nav class="menu" aria-label="Navigation principale">
+        <a href="#accueil">Accueil</a>
+        <a href="#equipes">Équipes</a>
+        <a href="#calendrier">Calendrier</a>
+        <a href="#actus">Actus</a>
+        <a href="#sponsors">Sponsors</a>
+        <a class="cta" href="#contact">Nous rejoindre</a>
+      </nav>
+      <button class="hamburger" id="hamburger" aria-label="Ouvrir le menu">☰</button>
     </div>
-     <nav class="menu" aria-label="Navigation principale">
+    <nav class="mobile" id="mobileMenu" aria-label="Navigation mobile">
       <a href="#accueil">Accueil</a>
       <a href="#equipes">Équipes</a>
       <a href="#calendrier">Calendrier</a>
@@ -32,7 +43,6 @@
       <a href="#sponsors">Sponsors</a>
       <a class="cta" href="#contact">Nous rejoindre</a>
     </nav>
-    </div>
   </header>
 </body>
 </html>
